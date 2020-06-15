@@ -47,20 +47,20 @@ pip3 install --user numpy pandas scipy dash plotly matplotlib
 ### Example screenshots
 
 Here is a screenshot from Correlation metrics protoype. A correlation matirx is computed (see left). When we click on a dot in the matrix, the corresponding time series are shown (right). Here the time series are not normalised:
-![Screen-1](/images/ZNCC-app-not_normalised.png)
+![Screen-1](images/ZNCC-app-not_normalised.png)
 
 Same as above, but here the time series are normalised using zero-mean and unit-variance normalisation:
-![Screen-2](/images/ZNCC-app-normalised.png)
+![Screen-2](images/ZNCC-app-normalised.png)
 
 Here is a screenshot from Correlation metrics protoype to show how cross-correaltion can be used to estimate a lag between two time series. In the next two screenshots the bottom graph show the cross-correlation function between the two time series. The middle graph plots the four times series after one of them has been corrected by taking into accounts the lag.
 
 - Here there is no lag between the two series:
   - Confirmed cases in NHS Dumfries & Galloway vs. NHS Tayside:
-  ![Screen-3](/images/correction_of_time_sereis_with_cross-correlation3.png)
+  ![Screen-3](images/correction_of_time_sereis_with_cross-correlation3.png)
 - In the next three screenshots, there is a lag.
   - confirmed cases in NHS Lothian vs. NHS Tayside:
-  ![Screen-4](/images/correction_of_time_sereis_with_cross-correlation1.png)
+  ![Screen-4](images/correction_of_time_sereis_with_cross-correlation1.png)
   - confirmed cases in NHS Forth Valley vs. NHS Lothian:
-  ![Screen-5](/images/correction_of_time_sereis_with_cross-correlation2.png)
+  ![Screen-5](images/correction_of_time_sereis_with_cross-correlation2.png)
   - ICU patients in NHS Ayshire & Arran vs. confirmed cases in NHS Glasgow & Glyde:
-  ![Screen-6](/images/correction_of_time_sereis_with_cross-correlation4.png)
+  ![Screen-6](images/correction_of_time_sereis_with_cross-correlation4.png)
