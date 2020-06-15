@@ -1,7 +1,7 @@
 # scrc-vis-analytical
 
 
-This is a repository for the visual analytics prototypes built by the visualisation team. Each folder is a separate 
+This is a repository for the visual analytics prototypes built by the visualisation team. Each folder is a separate prototype either deriving new data for further analysis and visualisation and/or a prototype for visually analysing a collection of raw and derived data.
 
 ## How to include your contribution?
 
