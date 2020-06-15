@@ -20,7 +20,11 @@ This prototype enables ...
 
 This protoype uses R/Python/C++ with XXX libraries.
 
-For setting up, you need to download XXX and run the following code:
+For setting up, you need to download XXX and run the following code, e.g.:
+
+```
+python script.py
+```
 
 ### Example screenshots
 
