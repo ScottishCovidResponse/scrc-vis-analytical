@@ -1,0 +1,11 @@
+*.csv
+
+cumulative-cases.csv
+hospital_confirmed.csv
+hospital_suspected.csv
+ICU-patients.csv
+
+zncc_cumulative-cases.csv
+zncc_hospital_confirmed.csv
+zncc_hospital_suspected.csv
+zncc_ICU-patients.csv
