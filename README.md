@@ -24,7 +24,7 @@ For setting up, you need to download XXX and run the following code:
 
 ### Example screenshots
 
-Here is my great protoype doing some 
+Here is a screenshot from XXX protoype doing some YYY analysis:
 
 ![Screen-1](/images/screenshot.png)
 
