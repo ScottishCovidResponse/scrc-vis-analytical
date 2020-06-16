@@ -219,18 +219,21 @@ def getSimilarityMetrics(file1, file2, window) -> pd.DataFrame:
                 # Compute the similarity metrics
                 zncc = getZNCC(seriesX, seriesY);
 
-                pearsonr = stats.pearsonr(seriesX, seriesY);
-                spearmanr = stats.spearmanr(seriesX, seriesY);
-                kendalltau = stats.kendalltau(seriesX, seriesY);
+                # Use pandas corr to ingnore inf and nan.
+                seriesX, seriesY = pd.Series(seriesX), pd.Series(seriesY),
+
+                pearsonr = seriesX.corr(seriesY, method='pearson');
+                spearmanr = seriesX.corr(seriesY, method='spearman');
+                kendalltau = seriesX.corr(seriesY, method='kendall');
 
                 # Add the values to the matrix
                 new_row = {
                     'x': X,
                     'y': Y,
                     'ZNCC': zncc,
-                    'pearsonr': pearsonr[0],
-                    'spearmanr': spearmanr[0],
-                    'kendalltau': kendalltau[0],
+                    'pearsonr': pearsonr,
+                    'spearmanr': spearmanr,
+                    'kendalltau': kendalltau,
                 };
 
                 output_df = output_df.append(new_row, ignore_index=True)
