@@ -14,11 +14,19 @@ We focus in particular on similarity metrics such as
 This protoype uses Python with numpy, pandas and scipy libraries (required),
 and dash and plotly express (optional) for displaying the results.
 
-For setting up, you need to download XXX and run the following code, e.g.:
+For setting up, you need to download pandas scipy dash plotly matplotlib, e.g.:
 
 ```
 pip3 install --user numpy pandas scipy dash plotly matplotlib
 ```
+
+I tested the code on a Linux box with Python 3.6.10 and:
+- numpy v1.17.3
+- pandas v1.0.1
+- scipy v1.2.0
+- dash v1.12.0
+- plotly v4.8.1
+- matplotlib v3.2.1
 
 ### List of files
 
