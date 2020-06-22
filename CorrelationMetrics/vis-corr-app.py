@@ -34,7 +34,7 @@ def drawMatrix(df, value1, value2, column):
         size=size * size_scale, # Vector of square sizes, proportional to size parameter
         color=colours, # Vector of square color values, mapped to color palette
         color_continuous_scale=px.colors.diverging.Picnic,
-        range_color=[-1,1],
+        # range_color=[-1,1],
         labels={'x': value1, 'y': value2},
         width=800, height=800,
     );

@@ -26,6 +26,8 @@ import pandas as pd;
 import scipy
 from scipy import stats as stats
 from scipy import signal as signal
+from skimage import metrics as ski_metrics
+from sklearn import metrics as skl_metrics
 
 
 window_set = ['none', 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'];
@@ -34,8 +36,8 @@ window_set = ['none', 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'];
 data_files = ["cumulative-cases.csv", "hospital_confirmed.csv", "hospital_suspected.csv", "ICU-patients.csv"];
 """ List of files that contain input data (here time series). """
 
-similarity_metrics_set = ["ZNCC", "pearsonr", "spearmanr", "kendalltau"];
-""" List of similarity metrics (.e.g correlations) that can be used. """
+similarity_metrics_set = ["ZNCC", "pearsonr", "spearmanr", "kendalltau", "SSIM", "PSNR", "MSE", "NRMSE", "ME", "MAE", "MSLE", "MedAE"];
+""" List of similarity and dissimilarity metrics (.e.g correlations, distance errors) that can be used. """
 
 NoneType = type(None);
 """ The NoneType/ """
@@ -160,13 +162,27 @@ def getSimilarityMetrics(file1, file2, window) -> pd.DataFrame:
     - Pearson product-moment correlation coefficient ('pearsonr'),
     - Spearman rank-order correlation coefficient ('spearmanr'),
     - Kendall's tau is a measure of the correspondence between two rankings ('kendalltau').
+    - Structural similarity ('SSIM').
+    - Peak signal-to-noise ratio is a ratio between singal and noise ('PSNR').
 
-    For 'ZNCC', 'pearsonr', and 'spearmanr', values are in the [-1, 1] range.
+    Dissimilarity metrics considered here are:
+    - Mean squared error ('MSE').
+    - Normalised root mean squred error ('NRMSE').
+    - Max error ('ME')
+    - Mean absolute error ('MAE').
+    - Mean squared log error ('MLSE').
+    - Median absolute error ('MedAE').
+
+    For 'ZNCC', 'pearsonr', 'spearmanr', and 'SSIM' values are in the [-1, 1] range.
     -1 corresponds to a strong anticorrelation, or inverse correlation;
     0 corresponds to a non-correlation; and
     1 corresponds to a strong correlation.
 
-    For 'kendalltau', values close to 1 indicate strong agreement, values close to -1 indicate strong disagreement."""
+    For 'kendalltau', values close to 1 indicate strong agreement, values close to -1 indicate strong disagreement.
+
+    For 'PSNR', high value usually represents low noise level, low value usually indicates high noise.
+
+    For 'MSE', 'NRMSE', 'ME', 'MAE', 'MSLE', and 'MedAE', 0.0 indicates two series are identical. Higher value indicates lower correlation."""
 
     # Create the column headers of the DataFrame
     columns = ['x', 'y'];
@@ -213,11 +229,13 @@ def getSimilarityMetrics(file1, file2, window) -> pd.DataFrame:
                     seriesX = smooth(x=seriesX,window_len=5, window=window);
                     seriesY = smooth(x=seriesY,window_len=5, window=window);
 
-                if seriesX.shape != seriesX.shape:
+                if seriesX.shape != seriesY.shape:
                     raise (ValueError, "Only accepts signals that have the same shape.")
 
                 # Compute the similarity metrics
                 zncc = getZNCC(seriesX, seriesY);
+                ssim = ski_metrics.structural_similarity(seriesX, seriesY);
+                psnr = getPSNR(seriesX, seriesY);
 
                 # Use pandas corr to ingnore inf and nan.
                 seriesX, seriesY = pd.Series(seriesX), pd.Series(seriesY),
@@ -225,6 +243,14 @@ def getSimilarityMetrics(file1, file2, window) -> pd.DataFrame:
                 pearsonr = seriesX.corr(seriesY, method='pearson');
                 spearmanr = seriesX.corr(seriesY, method='spearman');
                 kendalltau = seriesX.corr(seriesY, method='kendall');
+
+                # Compute dissimilarity metrics
+                mse = ski_metrics.mean_squared_error(seriesX, seriesY);
+                nrmse = ski_metrics.normalized_root_mse(seriesX, seriesY);
+                me = getME(seriesX, seriesY);
+                mae = getMAE(seriesX, seriesY);
+                msle = getMSLE(seriesX, seriesY);
+                medae = getMedAE(seriesX, seriesY);
 
                 # Add the values to the matrix
                 new_row = {
@@ -234,6 +260,14 @@ def getSimilarityMetrics(file1, file2, window) -> pd.DataFrame:
                     'pearsonr': pearsonr,
                     'spearmanr': spearmanr,
                     'kendalltau': kendalltau,
+                    'SSIM': ssim,
+                    'PSNR': psnr,
+                    'MSE': mse,
+                    'NRMSE': nrmse,
+                    'ME': me,
+                    'MAE': mae,
+                    'MSLE': msle,
+                    'MedAE': medae
                 };
 
                 output_df = output_df.append(new_row, ignore_index=True)
@@ -349,3 +383,48 @@ def smooth(x,window_len=11,window='hanning') -> np.array:
 
     y=np.convolve(w/w.sum(),s,mode='valid')
     return y
+
+def getPSNR(series1, series2) -> float:
+    """Return 0 if mean squared error between two series is 0.
+    PSNR cannot be computed if mean squared error between two series is 0."""
+
+    if ski_metrics.mean_squared_error(series1, series2) == 0.:
+        return 0.
+
+    return ski_metrics.peak_signal_noise_ratio(series1, series2)
+
+def getME(series1, series2) -> float:
+    """Returns Max Error (ME) between two signals. Returns 0 if contains NaN or Inf."""
+
+    if np.isnan([series1,series2]).any() == True or np.isinf([series1,series2]).any() == True:
+
+        return 0.
+
+    return skl_metrics.max_error(series1, series2)
+
+def getMAE(series1, series2) -> float:
+    """Returns Mean Absolute Error (MAE) between two signals. Returns 0 if contains NaN or Inf."""
+
+    if np.isnan([series1,series2]).any() == True or np.isinf([series1,series2]).any() == True:
+
+        return 0.
+
+    return skl_metrics.mean_absolute_error(series1, series2)
+
+def getMSLE(series1, series2) -> float:
+    """Returns Mean Squared Log Error (MSLE) between two signals. Returns 0 if contains NaN or Inf."""
+
+    if np.isnan([series1,series2]).any() == True or np.isinf([series1,series2]).any() == True:
+
+        return 0.
+
+    return skl_metrics.mean_squared_log_error(series1, series2)
+
+def getMedAE(series1, series2) -> float:
+    """Returns Median Absolute Error (MedAE) between two signals. Returns 0 if contains NaN or Inf."""
+
+    if np.isnan([series1,series2]).any() == True or np.isinf([series1,series2]).any() == True:
+
+        return 0.
+
+    return skl_metrics.median_absolute_error(series1, series2)
