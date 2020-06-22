@@ -305,6 +305,10 @@ def removeMissingData(series) -> np.array:
             temp.append(0);
         elif isinstance(i, str):
             temp.append(removeComma(i));
+        elif np.isnan(i) == True:
+            temp.append(0);
+        elif np.isinf(i) == True:
+            temp.append(0);
         else:
             temp.append(i);
 
@@ -388,43 +392,44 @@ def getPSNR(series1, series2) -> float:
     """Return 0 if mean squared error between two series is 0.
     PSNR cannot be computed if mean squared error between two series is 0."""
 
-    if ski_metrics.mean_squared_error(series1, series2) == 0.:
+    temp1 = removeMissingData(series1);
+    temp2 = removeMissingData(series2);
+
+    data_range = max(max(series1),max(series2));
+
+    if ski_metrics.mean_squared_error(temp1, temp2) == 0.:
         return 0.
 
-    return ski_metrics.peak_signal_noise_ratio(series1, series2)
+    return ski_metrics.peak_signal_noise_ratio(temp1, temp2, data_range=data_range)
 
 def getME(series1, series2) -> float:
     """Returns Max Error (ME) between two signals. Returns 0 if contains NaN or Inf."""
 
-    if np.isnan([series1,series2]).any() == True or np.isinf([series1,series2]).any() == True:
+    temp1 = removeMissingData(series1);
+    temp2 = removeMissingData(series2);
 
-        return 0.
-
-    return skl_metrics.max_error(series1, series2)
+    return skl_metrics.max_error(temp1, temp2)
 
 def getMAE(series1, series2) -> float:
     """Returns Mean Absolute Error (MAE) between two signals. Returns 0 if contains NaN or Inf."""
 
-    if np.isnan([series1,series2]).any() == True or np.isinf([series1,series2]).any() == True:
+    temp1 = removeMissingData(series1);
+    temp2 = removeMissingData(series2);
 
-        return 0.
-
-    return skl_metrics.mean_absolute_error(series1, series2)
+    return skl_metrics.mean_absolute_error(temp1, temp2)
 
 def getMSLE(series1, series2) -> float:
     """Returns Mean Squared Log Error (MSLE) between two signals. Returns 0 if contains NaN or Inf."""
 
-    if np.isnan([series1,series2]).any() == True or np.isinf([series1,series2]).any() == True:
+    temp1 = removeMissingData(series1);
+    temp2 = removeMissingData(series2);
 
-        return 0.
-
-    return skl_metrics.mean_squared_log_error(series1, series2)
+    return skl_metrics.mean_squared_log_error(temp1, temp2)
 
 def getMedAE(series1, series2) -> float:
     """Returns Median Absolute Error (MedAE) between two signals. Returns 0 if contains NaN or Inf."""
 
-    if np.isnan([series1,series2]).any() == True or np.isinf([series1,series2]).any() == True:
+    temp1 = removeMissingData(series1);
+    temp2 = removeMissingData(series2);
 
-        return 0.
-
-    return skl_metrics.median_absolute_error(series1, series2)
+    return skl_metrics.median_absolute_error(temp1, temp2)
