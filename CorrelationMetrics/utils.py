@@ -81,12 +81,15 @@ def correlateTimeSeries(series1, series2) -> np.array:
     Returns the np.array that contains the cross correlation.
     """
 
+    if not series1 or not series2:
+        raise ValueError('Correlation cannot be computed if any input is empty');
+
     # Use numpy to compute the cross correlation
     cross_corr = np.correlate(np.array(series1, dtype=np.float32), np.array(series2, dtype=np.float32), "same");
     return cross_corr / len(series1);
 
     # Use numpy to compute the cross correlation
-    return scipy.correlate(np.array(series1), np.array(series2), mode='same');
+    # return scipy.correlate(np.array(series1), np.array(series2), mode='same');
 
 
 def getTimeSeries(file: str, column: str, window: str) -> pd.DataFrame:

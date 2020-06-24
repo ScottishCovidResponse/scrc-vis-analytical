@@ -56,6 +56,7 @@ def getCorrelation(df, normalise_data):
 
     corr = [];
     x_val = [];
+    dates = [];
     lag = 0;
 
     if len(df["data"].unique()) == 2:
