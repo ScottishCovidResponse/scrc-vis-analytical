@@ -17,7 +17,7 @@ and dash and plotly express (optional) for displaying the results.
 For setting up, you need to download pandas scipy dash plotly matplotlib, e.g.:
 
 ```
-pip3 install --user numpy pandas scipy dash plotly matplotlib
+python3 -m pip install --user numpy pandas scipy dash plotly matplotlib
 ```
 
 I tested the code on a Linux box with Python 3.6.10 and:
