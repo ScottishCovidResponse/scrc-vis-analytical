@@ -1,7 +1,5 @@
 ### PHE Covid-19 Data Gathering
 
-
-
 PHE Data download - https://coronavirus.data.gov.uk/details/download
 
 ### At NHS Trust Level
@@ -38,9 +36,12 @@ https://epiforecasts.io/covid19.nhs.data/reference/index.html
 
 # Meta-data
 
-## Public Health Outcomes Framework
+### Public Health Outcomes Framework
 
 https://fingertips.phe.org.uk/profile/public-health-outcomes-framework
 
 Downloaded from here: https://fingertips.phe.org.uk/profile/public-health-outcomes-framework/data#page/9/gid/1000049/pat/6/par/E12000001/ati/402/are/E06000047/iid/90362/age/1/sex/1/cid/4/tbm/1
 
+### Population data that is at UTLA level
+
+https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationprojections/datasets/localauthoritiesinenglandtable2
