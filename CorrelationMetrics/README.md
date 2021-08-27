@@ -17,16 +17,25 @@ and dash and plotly express (optional) for displaying the results.
 For setting up, you need to download pandas scipy dash plotly matplotlib, e.g.:
 
 ```
-python3 -m pip install --user numpy pandas scipy dash plotly matplotlib
+python3 -m pip install --user -r requirements.txt
 ```
 
-I tested the code on a Linux box with Python 3.6.10 and:
-- numpy v1.17.3
-- pandas v1.0.1
-- scipy v1.2.0
-- dash v1.12.0
-- plotly v4.8.1
-- matplotlib v3.2.1
+or
+
+```
+conda install --file requirements.txt
+```
+
+I tested the code on a Linux box with Python 3.9.6 and:
+- dash 1.19.0
+- matplotlib 3.4.2
+- numpy 1.20.3
+- pandas 1.3.2
+- plotly 4.14.3
+- scipy 1.7.0
+- seaborn 0.11.2
+- skimage 0.18.1
+- sklearn 0.24.2
 
 ### List of files
 
