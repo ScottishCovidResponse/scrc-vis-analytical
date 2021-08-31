@@ -34,3 +34,5 @@ write.csv(adm_utla,'2021_08_04-admissions_utla.csv')
 tt = trust_utla_mapping
 
 write.csv(trust_utla_mapping,'trust_utla_mapping.csv')
+
+summary <- summarise_mapping(mapping = trust_utla_mapping, geography = "E09000012")
