@@ -9,16 +9,18 @@ import copy
 import pandas as pd
 import numpy as np
 
+
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
 
 import plotly.express as px
 
+
+
 # Own modules
 import utils
 from utils import NoneType;
-
 
 def drawMatrix(df, value1, value2, column):
 
